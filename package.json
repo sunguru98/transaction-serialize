@@ -16,7 +16,7 @@
     "express": "^4.18.1"
   },
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "tsc && pm2 start dist/server.js",
     "dev": "nodemon dist/server.js"
   }
 }
