@@ -10,6 +10,10 @@ config();
 // Allow JSON body
 app.use(express.json());
 
+app.get('/', (_, res) => {
+  res.status(203).json({ ping: 'pong' });
+});
+
 app.post('/sign', (req, res) => {
   try {
     if (!req.body.txData) {
