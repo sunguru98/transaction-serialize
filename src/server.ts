@@ -1,23 +1,11 @@
-import express, { ErrorRequestHandler } from 'express';
+import express from 'express';
 import { config } from 'dotenv';
 import { Keypair, Transaction } from '@solana/web3.js';
-import { IpDeniedError, IpFilter } from 'express-ipfilter';
 
 const app = express();
 const PORT = 4000;
 
 config();
-
-// Allow the following IPs
-const ips = ['192.168.0.110'];
-
-// Create the server
-app.use(
-  IpFilter(ips, {
-    mode: 'allow',
-    log: true,
-  })
-);
 
 // Allow JSON body
 app.use(express.json());
@@ -43,14 +31,5 @@ app.post('/sign', (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-const errorHandler: ErrorRequestHandler = (err, _, res, _next) => {
-  res.status(err instanceof IpDeniedError ? 403 : err.status || 500);
-  res.json({
-    error: 'Unauthorized IP Address',
-  });
-};
-
-app.use(errorHandler);
 
 app.listen(PORT, () => console.log('App listening on port:', PORT));
